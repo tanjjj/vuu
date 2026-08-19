@@ -2,10 +2,10 @@ package org.finos.vuu.core.module.editable
 
 import org.finos.vuu.core.table.{RowWithData, TableContainer}
 import org.finos.vuu.net.ClientSessionId
-import org.finos.vuu.net.rpc.DefaultRpcHandler
-import org.finos.vuu.viewport._
+import org.finos.vuu.net.rpc.{CreateSessionTableRpcHandler, DefaultRpcHandler}
+import org.finos.vuu.viewport.*
 
-class ProcessRpcService(implicit val tableContainer: TableContainer) extends DefaultRpcHandler {
+class ProcessRpcService(implicit val tableContainer: TableContainer) extends DefaultRpcHandler with CreateSessionTableRpcHandler {
 
   private final val FIX_SEQ_RESET_TABLE = "fixSequenceReset"
 

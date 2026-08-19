@@ -27,16 +27,34 @@ object EditableModule extends DefaultModule {
           columns = table.getTableDef.getColumns,
           service = new ProcessRpcService()(tableContainer)
         )
-      ).addSessionTable(
-      SessionTableDef(
-        name = "fixSequenceReset",
-        keyField = "process-id",
-        customColumns = Columns.fromNames("process-id:String", "sequenceNumber:Int")
-      ),
-      (table, _, _, tableContainer) => ViewPortDef(
-        columns = table.getTableDef.getColumns,
-        service = new FixSequenceRpcService()(using tableContainer)
       )
-    ).asModule()
+      .addSessionTable(
+        SessionTableDef(
+          name = "fixSequenceReset",
+          keyField = "process-id",
+          customColumns = Columns.fromNames("process-id:String", "sequenceNumber:Int")
+        ),
+        (table, _, _, tableContainer) => ViewPortDef(
+          columns = table.getTableDef.getColumns,
+          service = new FixSequenceRpcService()(using tableContainer)
+        )
+      )
+      .addSessionTable(
+        SessionTableDef(
+          name = "edit-process",
+          keyField = "process-id",
+          customColumns = Columns.fromNames(
+            "id".string(),
+            "name".string(),
+            "uptime".long(),
+            "status".string(),
+            "setToDelete".boolean()) // TODO 2231 update columns
+        ),
+        (table, _, _, tableContainer) => ViewPortDef(
+          columns = table.getTableDef.getColumns,
+          service = new EditModeRpcService
+        )
+      )
+      .asModule()
   }
 }
